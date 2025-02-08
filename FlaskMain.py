@@ -80,7 +80,7 @@ def upload_file():
         image = Image.open(filepath)
         checking=request.form['clothingType']
 
-        result = segment_clothing(img=image)
+        result = segment_clothing(img=image, clothes=checking)
         
         
         
