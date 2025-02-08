@@ -14,6 +14,37 @@ from complementary import *
 from SegCloth import segment_clothing
 from PIL import Image
 
+class clothingItem(object):
+    def __init__(self, img, type, colors=[], percemnts=[], name=""):
+        self.name = name
+        self.img = img
+        self.type = type
+        self.colors = colors
+        self.percemnts = percemnts
+    def getImg(self):
+        return self.img
+    def getType(self):
+        return self.type
+    def getColors(self):
+        return self.colors
+    def getPercemnts(self):
+        return self.percemnts
+    def setName(self, name):
+        self.name = name
+    def getName(self):
+        return self.name
+    def setImg(self, img):
+        self.img = img
+    def setType(self, type):
+        self.type = type
+    def setColors(self, colors):
+        self.colors = colors
+    def setPercemnts(self, percemnts):
+        self.percemnts = percemnts
+        
+clothes=[]
+updatedPaths=[]
+
 from SegCloth import segment_clothing
 
 from PIL import Image
@@ -161,10 +192,9 @@ def upload_file():
         
         
         colors, percents = detect_colors(result_path, num_colors=10)
-        
         if adjusted_path not in updatedPaths:
             clothes.append(clothingItem(adjusted_path, "Upper-clothes", colors, percents))
-            updatedPaths.append(adjusted_path)
+        updatedPaths.append(adjusted_path)
         return render_template('index.html',
         
         message='File successfully uploaded',
@@ -172,13 +202,9 @@ def upload_file():
         image=url_for('uploaded_file', filename=filename),
         
         image2=url_for('uploaded_file', filename=result_filename),
-        
         colors=colors,
-        
         percents=percents,
-        
-        clothes=clothes,
-        
+        clothes=clothes
         )
 
 @app.route('/new-page')
