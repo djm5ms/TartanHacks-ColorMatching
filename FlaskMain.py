@@ -2,6 +2,12 @@ from flask import Flask, render_template, request
 import os
 from werkzeug.utils import secure_filename
 
+from SegCloth import segment_clothing
+
+#function for removing the background of clothes
+def segment(img, clothes):
+    return segment_clothing(img, clothes)
+
 
 app = Flask(__name__)
 
