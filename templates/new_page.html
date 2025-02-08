@@ -1,55 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>New Page</title>
+    <title>You are in the closet</title>
+    
 </head>
 <body>
-    <h1>Image Display</h1>
-    <ul>
-        
-        <style>
-        .flipbook {
-            display: flex;
-            overflow: hidden;
-            width: 300px; /* Adjust the width as needed */
-            height: 400px; /* Adjust the height as needed */
-            position: relative;
-        }
-        .flipbook img {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            transition: transform 0.6s ease;
-            backface-visibility: hidden;
-        }
-        .flipbook img.hidden {
-            transform: rotateY(180deg);
-        }
-        </style>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const images = document.querySelectorAll('.flipbook img');
-            let currentIndex = 0;
-
-            function showImage(index) {
-            images.forEach((img, i) => {
-                img.classList.toggle('hidden', i !== index);
-            });
-            }
-
-            document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowRight') {
-                currentIndex = (currentIndex + 1) % images.length;
-                showImage(currentIndex);
-            } else if (event.key === 'ArrowLeft') {
-                currentIndex = (currentIndex - 1 + images.length) % images.length;
-                showImage(currentIndex);
-            }
-            });
-
-            showImage(currentIndex);
-        });
-        </script>
-    </ul>
+    <div>
+        {%for item in clothes%}
+        <img src="{{ item.getImg() }}" alt="Uploaded Image">
+        {%endfor%}
+    </div>
+    
 </body>
 </html>

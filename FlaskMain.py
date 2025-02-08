@@ -80,7 +80,10 @@ def upload_file():
         image = Image.open(filepath)
         checking=request.form['clothingType']
 
-        result = segment_clothing(img=image)
+        try:
+            result = segment_clothing(img=image, clothes=[checking])
+        except:
+            result = segment_clothing(img=image)
         
         
         
@@ -111,8 +114,7 @@ def upload_file():
 @app.route('/new-page')
 def new_page():
     return render_template('new_page.html',
-        clothes=clothes
-        )
+        clothes=clothes)
 
 
 
