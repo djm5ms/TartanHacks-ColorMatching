@@ -48,25 +48,48 @@ def makeRGBCompliments(clothes):
         compliments.append(255-item.colors)
     return compliments
 
-def possibleClosestCompliment(clothes, item=clothingItem(img='',type='')):
-    if item is None:
+def possibleClosestCompliment(clothes, item):
+    if item is None or not clothes:
+        print("No item or clothes provided")  # Debug print
         return {}
     
-    type=item.getType()
+    print(f"Processing item type: {item.getType()}")  # Debug print
+    print(f"Number of clothes items: {len(clothes)}")  # Debug print
     
-    df = pd.DataFrame([vars(obj) for obj in clothes])
+    type = item.getType()
     
-    df=df["colors"]-255
+    # Create DataFrame
+    df = pd.DataFrame([{
+        'type': obj.getType(),
+        'colors': obj.getColors(),
+        'percents': obj.getPercents(),
+        'item': obj
+    } for obj in clothes])
     
-    targetRGB=np.array(item.getColors())-255
+    # Calculate weighted average for target item
+    targetRGB = np.array(weightedAverage(item)) - 255
     
-    differences=abs(df[df['type']!=type]-targetRGB)
+    # Apply weightedAverage to each row and calculate difference
+    df['difference'] = df.apply(lambda row: np.sum(np.abs(np.array(weightedAverage(row['item'])) - 255 - targetRGB)), axis=1)
     
-    output={}
+    # Filter out items of the same type as the target
+    differences = df[df['type'] != type]
     
-    for type in unique(differences['type']):
-        output[type]=clothingItem(type=type, colors=df[df[type]==type].iloc[differences[differences[type]==type].sum(axis=1).idxmin()]['colors'])
+    output = {}  # Initialize output dictionary
+    
+    for unique_type in differences['type'].unique():
+        type_subset = differences[differences['type'] == unique_type]
+        closest_item = type_subset.loc[type_subset['difference'].idxmin()]['item']
+        output[unique_type] = closest_item
+    
+    print(f"Output dictionary: {output}")  # Moved debug print here, after output is created
     return output
+
+
+# Helper function to calculate weighted average
+def weightedAverage(item):
+    return [color * percent for color, percent in zip(item.getColors(), item.getPercents())]
+
 
 
 color_dict = {
@@ -94,12 +117,6 @@ def closestToo(item):
             closest = rgb
     
     return closest
-
-def weightedAverage(item):
-    weighted = []
-    for i in range(len(item.colors)):
-        weighted.append(item.colors[i] * item.percents[i])
-    return weighted
         
         
     
@@ -126,8 +143,6 @@ def closestCompliment(usingItem, compliments, clothes):
     if (closestCompliment == None):
         return usingItem
     return closestCompliment
-
-
 
 def findFromName(name, clothes):
     for clothing in clothes:

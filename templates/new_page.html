@@ -36,13 +36,21 @@
 </style>
 </head>
 <body>
-    <h1>Image Display</h1>
-    <ul>
-        {% for item in clothes %}
-        <li>
-            <img src="{{ item.getImg() }}" alt="Uploaded Image">
-        </li>
-        {% endfor %}
-    </ul>
+    <div class="image-loop-container" style="display: flex; justify-content: center;">
+        <div class="image-loop">
+            {% for item in clothes %}
+            <a href="{{ url_for('item_view', name=item.getImg().strip(imgDir))}}">
+              <img src="{{ item.getImg() }}" alt="{{ item.getName() }}">
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    
+
+
+    <form action="/new-page" method = "post">
+        <button type="submit" class="button">Get RGB List</button>
+    </form>
+    
 </body>
 </html>

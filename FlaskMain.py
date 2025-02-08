@@ -14,33 +14,7 @@ from complementary import *
 from SegCloth import segment_clothing
 from PIL import Image
 
-class clothingItem(object):
-    def __init__(self, img, type, colors=[], percemnts=[], name=""):
-        self.name = name
-        self.img = img
-        self.type = type
-        self.colors = colors
-        self.percemnts = percemnts
-    def getImg(self):
-        return self.img
-    def getType(self):
-        return self.type
-    def getColors(self):
-        return self.colors
-    def getPercemnts(self):
-        return self.percemnts
-    def setName(self, name):
-        self.name = name
-    def getName(self):
-        return self.name
-    def setImg(self, img):
-        self.img = img
-    def setType(self, type):
-        self.type = type
-    def setColors(self, colors):
-        self.colors = colors
-    def setPercemnts(self, percemnts):
-        self.percemnts = percemnts
+
         
 clothes=[]
 updatedPaths=[]
@@ -50,10 +24,6 @@ from SegCloth import segment_clothing
 from PIL import Image
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-
-
-clothes=[]
-updatedPaths=[]
 
 
 app = Flask(__name__)
@@ -236,17 +206,26 @@ def item_view(name):
 @app.route('/goodMatch/<string:name>')
 def goodMatch(name):
     name = f"{app.config['UPLOAD_FOLDER_URL']}/{name}"
-    clothing2 = None
+    print(f"Looking for clothing with name: {name}")  # Debug print
+    
     for clothing in clothes:
+        print(f"Checking clothing: {clothing.getImg()}")  # Debug print
         if clothing.getImg() == name:
-            clothing2 = clothing
-            break  # Use break instead of exit
+            result_dict = possibleClosestCompliment(clothes, clothing)
+            print(f"Result dictionary: {result_dict}")  # Debug print
+            print(f"Result keys: {result_dict.keys()}")  # Debug print
+            
+            return render_template('bestMatch.html', 
+                                 clothes=clothes, 
+                                 dictcomp=result_dict, 
+                                 dictcont=result_dict)
     
-    if clothing2 is None:
-        return "Clothing item not found", 404  # Return an error if no match is found
+    return "Clothing item not found", 404
+
+
+
     
-    dict = possibleClosestCompliment(clothes, clothing2)
-    return render_template('bestMatch.html', clothes=clothes, dictcomp=dict, dictcont=dict)
+    
 
 
 
