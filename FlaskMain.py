@@ -130,17 +130,17 @@ def item_view(name):
 @app.route('/goodMatch/<string:name>')
 def goodMatch(name):
     name = f"{app.config['UPLOAD_FOLDER_URL']}/{name}"
+    
     clothing2 = None
     for clothing in clothes:
         if clothing.getImg() == name:
-            clothing2 = clothing
-            break  # Use break instead of exit
-    
+            dict = possibleClosestCompliment(clothes, clothing)
+            return render_template('bestMatch.html', clothes=clothes, dictcomp=dict, dictcont=dict)
+        
     if clothing2 is None:
         return "Clothing item not found", 404  # Return an error if no match is found
     
-    dict = possibleClosestCompliment(clothes, clothing2)
-    return render_template('bestMatch.html', clothes=clothes, dictcomp=dict, dictcont=dict)
+    
 
 
 
