@@ -24,7 +24,10 @@ def upload_file():
     if file:
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return 'File uploaded successfully'
+        return render_template('index.html', {
+            'message': 'File successfully uploaded',
+            'image': f'{UPLOAD_FOLDER}/{filename}'
+        })
 
 @app.route('/new-page')
 def new_page():
