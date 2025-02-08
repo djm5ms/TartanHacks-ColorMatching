@@ -11,6 +11,7 @@ from PIL import Image
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['UPLOAD_FOLDER_URL'] = '/uploads'
+app.static_folder = 'uploads'
 
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
@@ -46,7 +47,7 @@ def upload_file():
 
         image = Image.open(filepath)
 
-        result = segment_clothing(img=image, clothes = ["Upper-clothes"])
+        result = segment_clothing(img=image, clothes = ["Pants"])
         
         
        
@@ -65,9 +66,12 @@ def upload_file():
         type=type
         )
 
-@app.route('/new-page')
-def new_page():
-    return '45'
+@app.route('/closet')
+def closet():
+    images = os.listdir('uploads')
+
+    return render_template('closet.html', images=images)
+    
 
 
 
