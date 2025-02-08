@@ -2,14 +2,29 @@
 <html>
 <head>
     <title>You are in the closet</title>
-    
+    <style>
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
+    <form action="/new-page" method="POST">
+        <button type="submit" class="button">Get RGB List</button>
+    </form>
+    
     <div>
         {%for item in clothes%}
         <img src="{{ item.getImg() }}" alt="Uploaded Image">
         {%endfor%}
     </div>
-    
 </body>
 </html>
