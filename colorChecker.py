@@ -39,8 +39,13 @@ def detect_colors(image_path, num_colors=10):
     
     kmeans_new = KMeans(n_clusters=optimal_k, random_state=40)
     df['color'] = kmeans_new.fit_predict(df)
+
+    percentForK = []
+    for i in range(optimal_k):
+        percentForK.append((df['color'] == i).sum() / len(df) * 100)
+
     
     
     
     
-    return kmeans_new.cluster_centers_
+    return kmeans_new.cluster_centers_, percentForK

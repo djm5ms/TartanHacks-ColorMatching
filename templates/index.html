@@ -56,7 +56,10 @@
 
     <ul>
         {% for item in colors %}
-        <li>{{ item }}</li>
+        <li>Color: {{ item }}</li>
+        {% endfor %}
+        {% for item in percents %}
+        <li>Percents: {{ item }}</li>
         {% endfor %}
     </ul>
 

@@ -5,6 +5,12 @@
 </head>
 <body>
     <h1>Image Display</h1>
-    <img src="{{ url_for('static', filename='uploads/weewee.png') }}" alt="Uploaded Image">
+    <ul>
+        {% for item in clothes %}
+        <li>
+            <img src="{{ item.getImg() }}" alt="Uploaded Image">
+        </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
