@@ -38,6 +38,10 @@
                 {% for i in range(clothing.getPercents()|length) %}
                     <li>Color: {{ clothing.getColors()[i] }} - Percents: {{ clothing.getPercents()[i] }}%</li>
                 {% endfor %}
+                <form action="{{ url_for('goodMatch', name=clothing.getImg().strip(imgDir))}}">
+                    <button type="submit" class="button">Find Best Matches For This</button>
+                </form>
+                
             </ul>
         </div>
     </div>

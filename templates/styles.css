@@ -1,0 +1,30 @@
+.image-loop-container {
+    width: 50%; /* Contain to the middle half of the page */
+    height: 50%%; /* Center in terms of height */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center vertically */
+    align-content: center;
+    margin: auto; /* Center horizontally */
+  }
+
+  .image-loop {
+    display: flex;
+    animation: scroll 20s linear infinite;
+  }
+
+  .image-loop img {
+    width: 200px; /* Adjust as needed */
+    height: auto;
+    margin-right: 20px; /* Space between images */
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }

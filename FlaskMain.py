@@ -4,9 +4,11 @@ from werkzeug.utils import secure_filename
 from werkzeug.middleware.shared_data import SharedDataMiddleware
 from colorChecker import detect_colors
 import numpy as np
-from complementary import clothingItem, getRGBList, makeRGBCompliments, closestCompliment
+from complementary import *
 from SegCloth import segment_clothing
 from PIL import Image
+
+
 
 clothes=[]
 updatedPaths=[]
@@ -20,6 +22,8 @@ from PIL import Image
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['UPLOAD_FOLDER_URL'] = '/uploads'
+
+imgDir=app.config['UPLOAD_FOLDER_URL']
 
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
@@ -101,8 +105,7 @@ def upload_file():
 def new_page():
     return render_template('new_page.html',
         clothes=clothes,
-        updatedPaths=updatedPaths,
-        imgDir= app.config['UPLOAD_FOLDER_URL'])
+        imgDir=imgDir)
 
 
 @app.route('/new-page', methods=['POST'])
@@ -121,8 +124,24 @@ def item_view(name):
     
     for clothing in clothes:
         if clothing.getImg() == name:
-            return render_template('itemView.html', clothing=clothing, randomWord="red")
+            return render_template('itemView.html', clothing=clothing, imgDir=imgDir)
     return "Not Found"    
+
+@app.route('/goodMatch/<string:name>')
+def goodMatch(name):
+    name = f"{app.config['UPLOAD_FOLDER_URL']}/{name}"
+    clothing2 = None
+    for clothing in clothes:
+        if clothing.getImg() == name:
+            clothing2 = clothing
+            break  # Use break instead of exit
+    
+    if clothing2 is None:
+        return "Clothing item not found", 404  # Return an error if no match is found
+    
+    dict = possibleClosestCompliment(clothes, clothing2)
+    return render_template('bestMatch.html', clothes=clothes, dictcomp=dict, dictcont=dict)
+
 
 
 

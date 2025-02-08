@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Match</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-box {
+            width: 150px;
+            height: 150px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function toggleImage(element, images) {
+            let currentSrc = element.src;
+            let nextSrc = images.find(src => src !== currentSrc);
+            element.src = nextSrc;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img class="image-box" src="{{ dictcomp.get('hats', 'blankHat.jpg') }}" onclick="toggleImage(this, ['{{ dictcomp.get('hats', 'blankHat.jpg') }}', '{{ dictcont.get('hats', 'blankHat.jpg') }}'])">
+            <img class="image-box" src="{{ dictcomp.get('outer-wear', 'BlankShirt.jpg') }}" onclick="toggleImage(this, ['{{ dictcomp.get('outer-wear', 'BlankShirt.jpg') }}', '{{ dictcont.get('outer-wear', 'BlankShirt.jpg') }}'])">
+            <img class="image-box" src="{{ dictcomp.get('pants', 'blankPants.png') }}" onclick="toggleImage(this, ['{{ dictcomp.get('pants', 'blankPants.png') }}', '{{ dictcont.get('pants', 'blankPants.png') }}'])">
+            <img class="image-box" src="{{ dictcomp.get('left-shoe', 'blankShoes.jpeg') }}" onclick="toggleImage(this, ['{{ dictcomp.get('left-shoe', 'blankShoes.jpeg') }}', '{{ dictcont.get('left-shoe', 'blankShoes.jpeg') }}'])">
+        </div>
+        <div class="image-container">
+            <img class="image-box" src="{{ dictcont.get('hats', 'blankHat.jpg') }}" onclick="toggleImage(this, ['{{ dictcont.get('hats', 'blankHat.jpg') }}', '{{ dictcomp.get('hats', 'blankHat.jpg') }}'])">
+            <img class="image-box" src="{{ dictcont.get('outer-wear', 'BlankShirt.jpg') }}" onclick="toggleImage(this, ['{{ dictcont.get('outer-wear', 'BlankShirt.jpg') }}', '{{ dictcomp.get('outer-wear', 'BlankShirt.jpg') }}'])">
+            <img class="image-box" src="{{ dictcont.get('pants', 'blankPants.png') }}" onclick="toggleImage(this, ['{{ dictcont.get('pants', 'blankPants.png') }}', '{{ dictcomp.get('pants', 'blankPants.png') }}'])">
+            <img class="image-box" src="{{ dictcont.get('left-shoe', 'blankShoes.jpeg') }}" onclick="toggleImage(this, ['{{ dictcont.get('left-shoe', 'blankShoes.jpeg') }}', '{{ dictcomp.get('left-shoe', 'blankShoes.jpeg') }}'])">
+        </div>
+    </div>
+</body>
+</html>
