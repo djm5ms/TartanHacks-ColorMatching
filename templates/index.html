@@ -23,5 +23,12 @@
     <input type="submit" value="Upload Image" >
     </form>
 
+    {% if (image is not none) %}
+    <img src="{{ image }}" alt="Uploaded Image">
+    {% endif %}
+    {% if (image2 is not none) %}
+    <img src="{{ image2 }}" alt="Uploaded Image">
+    {% endif %}
+
 </body>
 </html>
