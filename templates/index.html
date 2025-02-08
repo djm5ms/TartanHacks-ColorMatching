@@ -11,6 +11,21 @@
             border-radius: 4px;
             display: inline-block;
         }
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #ff4444;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        .logout-button:hover {
+            background-color: #cc0000;
+        }
         h1 {
             text-align: center;
         }
@@ -33,17 +48,34 @@
     </style>
 </head>
 <body>
+    <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
     
     <h1>Welcome to your Color Closet!</h1>
         
-    <a href="{{ url_for('closet') }}" class="button">Enter Closet</a>
+    <a href="{{ url_for('new_page') }}" class="button">Go to New Page</a>
     
     <p1> Upload photos below to add them to your closet:
         </p1>
     
     <form method="post" enctype="multipart/form-data">
         <label for="imageUpload">Select image to upload:</label>
-        <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
+        <input type="file" id="imageUpload" name="imageUpload" accept="image/*" required>
+        
+        <label for="clothingType">Select clothing type:</label>
+        <label for="clothingName">Enter clothing name (optional):</label>
+        <input type="text" id="clothingName" name="clothingName">
+        <select id="clothingType" name="clothingType" required>
+            <option value="Hat">Hat</option>
+            <option value="Upper-clothes">Upper-clothes</option>
+            <option value="Skirt">Skirt</option>
+            <option value="Pants">Pants</option>
+            <option value="Dress">Dress</option>
+            <option value="Belt">Belt</option>
+            <option value="Left-shoe">Left-shoe</option>
+            <option value="Right-shoe">Right-shoe</option>
+            <option value="Scarf">Scarf</option>
+        </select>
+        
         <input type="submit" value="Upload Image" class="upload-button">
     </form>
     
@@ -54,6 +86,15 @@
     <img src="{{ image2 }}" alt="Uploaded Image">
     {% endif %}
 
+    <ul>
+        {% for item in colors %}
+        <li>Color: {{ item }}</li>
+        {% endfor %}
+        {% for item in percents %}
+        <li>Percents: {{ item }}</li>
+        {% endfor %}
+        {{checking}}
+    </ul>
+    
 </body>
 </html>
-
