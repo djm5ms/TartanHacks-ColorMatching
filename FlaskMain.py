@@ -1,12 +1,18 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 import os
 from werkzeug.utils import secure_filename
+from werkzeug.middleware.shared_data import SharedDataMiddleware
 
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['UPLOAD_FOLDER_URL'] = '/uploads'
 
-UPLOAD_FOLDER = 'uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# Serve the uploads folder as a static folder
+app.add_url_rule('/uploads/<filename>', 'uploaded_file', build_only=True)
+app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
+    '/uploads': app.config['UPLOAD_FOLDER']
+})
 
 
 @app.route('/')
@@ -24,10 +30,11 @@ def upload_file():
     if file:
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return render_template('index.html', {
-            'message': 'File successfully uploaded',
-            'image': f'{UPLOAD_FOLDER}/{filename}'
-        })
+    
+        return render_template('index.html',
+        message='File successfully uploaded',
+        image=url_for('uploaded_file', filename=filename)
+        )
 
 @app.route('/new-page')
 def new_page():
