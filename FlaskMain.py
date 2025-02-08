@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, url_for
 import os
 from werkzeug.utils import secure_filename
 from werkzeug.middleware.shared_data import SharedDataMiddleware
+from colorChecker import detect_colors
+
 
 
 from SegCloth import segment_clothing
@@ -54,15 +56,14 @@ def upload_file():
         result_path = os.path.join(app.config['UPLOAD_FOLDER'], result_filename)
         result.save(result_path)
         
-       
-       
+        colors = detect_colors(result_path, num_colors=10)
        
    
         return render_template('index.html',
         message='File successfully uploaded',
         image=url_for('uploaded_file', filename=filename),
         image2=url_for('uploaded_file', filename=result_filename),
-        type=type
+        colors=colors
         )
 
 @app.route('/new-page')
