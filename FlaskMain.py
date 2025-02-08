@@ -44,7 +44,7 @@ def upload_file():
 
         image = Image.open(filepath)
 
-        result = segment_clothing(img=image, clothes = ["Upper-clothes"])
+        result = segment_clothing(image, clothes = ["Upper-clothes"])
        
         result_filename = "result_" + filename
         result_path = os.path.join(app.config['UPLOAD_FOLDER'], result_filename)
