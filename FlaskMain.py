@@ -7,20 +7,20 @@ import numpy as np
 
 
 class clothingItem(object):
-    def __init__(self, img, type, colors=[], percemnts=[], name=""):
+    def __init__(self, img, type, colors=[], percents=[], name="Item"):
         self.name = name
         self.img = img
         self.type = type
         self.colors = colors
-        self.percemnts = percemnts
+        self.percents = percents
     def getImg(self):
         return self.img
     def getType(self):
         return self.type
     def getColors(self):
         return self.colors
-    def getPercemnts(self):
-        return self.percemnts
+    def getPercents(self):
+        return self.percents
     def setName(self, name):
         self.name = name
     def getName(self):
@@ -31,8 +31,10 @@ class clothingItem(object):
         self.type = type
     def setColors(self, colors):
         self.colors = colors
-    def setPercemnts(self, percemnts):
-        self.percemnts = percemnts
+    def setPercents(self, percents):
+        self.percents = percents
+    def toString(self):
+        return f"Path: {self.img} Name: {self.name}, Type: {self.type}, Colors: {self.colors}, Percents: {self.percents}"
         
 clothes=[]
 updatedPaths=[]
@@ -98,23 +100,50 @@ def upload_file():
         
         
         colors, percents = detect_colors(result_path, num_colors=10)
+        
         if adjusted_path not in updatedPaths:
-            clothes.append(clothingItem(adjusted_path, "Upper-clothes", colors, percents))
-        updatedPaths.append(adjusted_path)
+                           
+            clothes.append(clothingItem(img=adjusted_path, type=checking, colors=colors, percents=percents))
+            if request.form["clothingName"] != "":
+                clothes[-1].setName(request.form["clothingName"])
+            updatedPaths.append(adjusted_path)
+            
+       
+        
+        
         return render_template('index.html',
+        
         message='File successfully uploaded',
+        
         image=url_for('uploaded_file', filename=filename),
+        
         image2=url_for('uploaded_file', filename=result_filename),
+        
         colors=colors,
+        
         percents=percents,
+        
         clothes=clothes,
-        checking=type(checking)
+        
         )
 
 @app.route('/new-page')
 def new_page():
     return render_template('new_page.html',
-        clothes=clothes)
+        clothes=clothes,
+        updatedPaths=updatedPaths,
+        imgDir= app.config['UPLOAD_FOLDER_URL'])
+    
+    
+
+@app.route('/item/<string:name>')
+def item_view(name):
+    name= f"{app.config['UPLOAD_FOLDER_URL']}/{name}"
+    
+    for clothing in clothes:
+        if clothing.getImg() == name:
+            return render_template('itemView.html', clothing=clothing, randomWord="red")
+    return "Not Found"    
 
 
 

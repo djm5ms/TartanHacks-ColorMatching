@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Item View</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        .image-container {
+            flex: 1;
+            max-width: 50%;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+        }
+        .info-container {
+            flex: 1;
+            max-width: 50%;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{clothing.getName()}}</h1>
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ clothing.getImg() }}" alt="clothing">
+        </div>
+        <div class="info-container">
+            <h2>{{ clothing.getName() }}</h2>
+            <p>Type: {{ clothing.getType() }}</p>
+            <h3>Colors:</h3>
+            <ul>
+                {% for i in range(clothing.getPercents()|length) %}
+                    <li>Color: {{ clothing.getColors()[i] }} - Percents: {{ clothing.getPercents()[i] }}%</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

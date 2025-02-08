@@ -46,6 +46,8 @@
         <input type="file" id="imageUpload" name="imageUpload" accept="image/*" required>
         
         <label for="clothingType">Select clothing type:</label>
+        <label for="clothingName">Enter clothing name (optional):</label>
+        <input type="text" id="clothingName" name="clothingName">
         <select id="clothingType" name="clothingType" required>
             <option value="Hat">Hat</option>
             <option value="Upper-clothes">Upper-clothes</option>
@@ -77,6 +79,6 @@
         {% endfor %}
         {{checking}}
     </ul>
-
+    
 </body>
 </html>
