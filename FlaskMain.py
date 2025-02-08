@@ -1,14 +1,29 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
 @app.route('/')
 def hello():
     return render_template('index.html')
+
+
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.route('/', methods=['POST'])
 def renderImage():
+    if 'imageUpload' not in request.files:
+        return 'No file part'
+    file = request.files['imageUpload']
+    if file.filename == '':
+        return 'No selected file'
+    if file:
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return 'File uploaded successfully'
     
-    return render_template('index.html')
 
 @app.route('/new-page')
 def new_page():
