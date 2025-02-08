@@ -3,6 +3,7 @@
 <head>
     <title>You are in the closet</title>
     <style>
+
         .image-loop-container {
           width: 50%; /* Contain to the middle half of the page */
           height: 50%%; /* Center in terms of height */
@@ -33,7 +34,7 @@
             transform: translateX(-100%);
           }
         }
-      </style>
+    </style>
     
 </head>
 <body>
@@ -46,6 +47,14 @@
             {% endfor %}
           
         </div>
+
     </div>
+    
+
+
+    <form action="/new-page" method="POST">
+        <button type="submit" class="button">Get RGB List</button>
+    </form>
+    
 </body>
 </html>

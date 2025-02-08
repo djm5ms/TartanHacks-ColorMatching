@@ -4,44 +4,18 @@ from werkzeug.utils import secure_filename
 from werkzeug.middleware.shared_data import SharedDataMiddleware
 from colorChecker import detect_colors
 import numpy as np
+from complementary import clothingItem, getRGBList, makeRGBCompliments, closestCompliment
+from SegCloth import segment_clothing
+from PIL import Image
 
-
-class clothingItem(object):
-    def __init__(self, img, type, colors=[], percents=[], name="Item"):
-        self.name = name
-        self.img = img
-        self.type = type
-        self.colors = colors
-        self.percents = percents
-    def getImg(self):
-        return self.img
-    def getType(self):
-        return self.type
-    def getColors(self):
-        return self.colors
-    def getPercents(self):
-        return self.percents
-    def setName(self, name):
-        self.name = name
-    def getName(self):
-        return self.name
-    def setImg(self, img):
-        self.img = img
-    def setType(self, type):
-        self.type = type
-    def setColors(self, colors):
-        self.colors = colors
-    def setPercents(self, percents):
-        self.percents = percents
-    def toString(self):
-        return f"Path: {self.img} Name: {self.name}, Type: {self.type}, Colors: {self.colors}, Percents: {self.percents}"
-        
 clothes=[]
 updatedPaths=[]
 
 from SegCloth import segment_clothing
 
 from PIL import Image
+
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -82,10 +56,13 @@ def upload_file():
         image = Image.open(filepath)
         checking=request.form['clothingType']
 
+
+
         try:
             result = segment_clothing(img=image, clothes=[checking])
         except:
             result = segment_clothing(img=image)
+
         
         
         
@@ -102,15 +79,8 @@ def upload_file():
         colors, percents = detect_colors(result_path, num_colors=10)
         
         if adjusted_path not in updatedPaths:
-                           
-            clothes.append(clothingItem(img=adjusted_path, type=checking, colors=colors, percents=percents))
-            if request.form["clothingName"] != "":
-                clothes[-1].setName(request.form["clothingName"])
+            clothes.append(clothingItem(adjusted_path, "Upper-clothes", colors, percents))
             updatedPaths.append(adjusted_path)
-            
-       
-        
-        
         return render_template('index.html',
         
         message='File successfully uploaded',
@@ -133,6 +103,15 @@ def new_page():
         clothes=clothes,
         updatedPaths=updatedPaths,
         imgDir= app.config['UPLOAD_FOLDER_URL'])
+
+
+@app.route('/new-page', methods=['POST'])
+def rgbList():
+    compliments = makeRGBCompliments(clothes)
+    closestMatch = closestCompliment(clothes[0], compliments, clothes)
+    return f"Closest compliment to {clothes[0].name} is {closestMatch.name}"
+
+        
     
     
 
@@ -149,3 +128,5 @@ def item_view(name):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
