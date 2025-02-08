@@ -47,9 +47,15 @@ def upload_file():
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
         image = Image.open(filepath)
+        
 
+        # Save as JPEG
+        
+        
         result = segment_clothing(img=image, clothes = ["Upper-clothes"])
-        result.save("segmentedBiker.png")
+        result = result.convert("RGB")
+        
+        result.save(os.path.join(app.config['UPLOAD_FOLDER'], "changed" + secure_filename(filename)), format="JPEG")
     
         return render_template('index.html',
         message='File successfully uploaded',

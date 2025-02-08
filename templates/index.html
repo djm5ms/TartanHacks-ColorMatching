@@ -18,16 +18,17 @@
     <a href="{{ url_for('new_page') }}" class="button">Go to New Page</a>
     
     <form method="post" enctype="multipart/form-data">
-    <label for="imageUpload">Select image to upload:</label>
-    <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
-    <input type="submit" value="Upload Image" >
+        <label for="imageUpload">Select image to upload:</label>
+        <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
+        <input type="text" name="name" placeholder="Enter Name">
+        <input type="submit" value="Upload Image" >
     </form>
 
     {% if (image is not none) %}
     <img src="{{ image }}" alt="Uploaded Image">
     {% endif %}
-    {% if (image is not none) %}
-    <img src="{{ image }}" alt="Uploaded Image">
+    {% if (image2 is not none) %}
+    <img src="{{ image2 }}" alt="Uploaded Image">
     {% endif %}
 
 </body>
