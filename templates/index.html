@@ -17,10 +17,10 @@
     <h1>Hello, World!</h1>
     <a href="{{ url_for('new_page') }}" class="button">Go to New Page</a>
     
-    <form action="/upload" method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
     <label for="imageUpload">Select image to upload:</label>
     <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
-    <input type="submit" value="Upload Image">
+    <input type="submit" value="Upload Image" >
     </form>
 
 </body>
