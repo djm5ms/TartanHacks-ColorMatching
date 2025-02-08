@@ -83,7 +83,10 @@ def upload_file():
         colors, percents = detect_colors(result_path, num_colors=10)
         
         if adjusted_path not in updatedPaths:
-            clothes.append(clothingItem(adjusted_path, "Upper-clothes", colors, percents))
+            try:
+                clothes.append(clothingItem(adjusted_path, request.form["clothingName"], colors, percents))
+            except:
+                clothes.append(clothingItem(adjusted_path, "misc", colors, percents))
             updatedPaths.append(adjusted_path)
         return render_template('index.html',
         

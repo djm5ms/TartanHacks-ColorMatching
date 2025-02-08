@@ -32,30 +32,51 @@
 <body>
     <div class="container">
         <div class="image-container">
-            <!-- Top layer: Hat and/or Scarf -->
-            <img class="image-box" src="{{ dictcomp.get('Hat', {}).getImg() if dictcomp.get('Hat') else (dictcomp.get('Scarf', {}).getImg() if dictcomp.get('Scarf') else url_for('static', filename='blankHat.jpg')) }}" 
-                 onclick="toggleImage(this, ['{{ dictcomp.get('Hat', {}).getImg() if dictcomp.get('Hat') else (dictcomp.get('Scarf', {}).getImg() if dictcomp.get('Scarf') else url_for('static', filename='blankHat.jpg')) }}', 
-                                             '{{ dictcont.get('Hat', {}).getImg() if dictcont.get('Hat') else (dictcont.get('Scarf', {}).getImg() if dictcont.get('Scarf') else url_for('static', filename='blankHat.jpg')) }}'])">
-            
-            <!-- Second layer: Upper-clothes and/or Dress -->
-            <img class="image-box" src="{{ dictcomp.get('Upper-clothes', {}).getImg() if dictcomp.get('Upper-clothes') else (dictcomp.get('Dress', {}).getImg() if dictcomp.get('Dress') else url_for('static', filename='BlankShirt.jpg')) }}" 
-                 onclick="toggleImage(this, ['{{ dictcomp.get('Upper-clothes', {}).getImg() if dictcomp.get('Upper-clothes') else (dictcomp.get('Dress', {}).getImg() if dictcomp.get('Dress') else url_for('static', filename='BlankShirt.jpg')) }}', 
-                                             '{{ dictcont.get('Upper-clothes', {}).getImg() if dictcont.get('Upper-clothes') else (dictcont.get('Dress', {}).getImg() if dictcont.get('Dress') else url_for('static', filename='BlankShirt.jpg')) }}'])">
-            
-            <!-- Third layer: Pants and/or Skirt -->
-            <img class="image-box" src="{{ dictcomp.get('Pants', {}).getImg() if dictcomp.get('Pants') else (dictcomp.get('Skirt', {}).getImg() if dictcomp.get('Skirt') else url_for('static', filename='blankPants.png')) }}" 
-                 onclick="toggleImage(this, ['{{ dictcomp.get('Pants', {}).getImg() if dictcomp.get('Pants') else (dictcomp.get('Skirt', {}).getImg() if dictcomp.get('Skirt') else url_for('static', filename='blankPants.png')) }}', 
-                                             '{{ dictcont.get('Pants', {}).getImg() if dictcont.get('Pants') else (dictcont.get('Skirt', {}).getImg() if dictcont.get('Skirt') else url_for('static', filename='blankPants.png')) }}'])">
-            
-            <!-- Bottom layer: Belt, Left-shoe, Right-shoe -->
-            <img class="image-box" src="{{ dictcomp.get('Belt', {}).getImg() if dictcomp.get('Belt') else (dictcomp.get('Left-shoe', {}).getImg() if dictcomp.get('Left-shoe') else (dictcomp.get('Right-shoe', {}).getImg() if dictcomp.get('Right-shoe') else url_for('static', filename='blankShoes.jpeg'))) }}" 
-                 onclick="toggleImage(this, ['{{ dictcomp.get('Belt', {}).getImg() if dictcomp.get('Belt') else (dictcomp.get('Left-shoe', {}).getImg() if dictcomp.get('Left-shoe') else (dictcomp.get('Right-shoe', {}).getImg() if dictcomp.get('Right-shoe') else url_for('static', filename='blankShoes.jpeg'))) }}', 
-                                             '{{ dictcont.get('Belt', {}).getImg() if dictcont.get('Belt') else (dictcont.get('Left-shoe', {}).getImg() if dictcont.get('Left-shoe') else (dictcont.get('Right-shoe', {}).getImg() if dictcont.get('Right-shoe') else url_for('static', filename='blankShoes.jpeg'))) }}'])">
+            {% if "Hat" in dictcomp and "Scarf" in dictcomp %}
+                <img src="{{ dictcomp['Hat'].getImg() }}" class="image-box" onclick="toggleImage(this, ['{{ dictcomp['Hat'].getImg() }}', '{{ dictcomp['Scarf'].getImg() }}'])">
+            {% elif "Hat" in dictcomp %}
+                <img src="{{ dictcomp['Hat'].getImg() }}" class="image-box">
+            {% elif "Scarf" in dictcomp %}
+                <img src="{{ dictcomp['Scarf'].getImg() }}" class="image-box">
+            {% else %}
+                <img src="{{ url_for('static', filename='blankHat.jpg') }}" class="image-box">
+            {% endif %}
         </div>
-        
-        <!-- Repeat the structure for the second column (dictcont) -->
+    
         <div class="image-container">
-            <!-- Similar structure as above, but with dictcont first in each ternary operation -->
+            {% if "Upper-wear" in dictcomp and "Dress" in dictcomp %}
+                <img src="{{ dictcomp['Upper-wear'].getImg() }}" class="image-box" onclick="toggleImage(this, ['{{ dictcomp['Upper-wear'].getImg() }}', '{{ dictcomp['Dress'].getImg() }}'])">
+            {% elif "Upper-wear" in dictcomp %}
+                <img src="{{ dictcomp['Upper-wear'].getImg() }}" class="image-box">
+            {% elif "Dress" in dictcomp %}
+                <img src="{{ dictcomp['Dress'].getImg() }}" class="image-box">
+            {% else %}
+                <img src="{{ url_for('static', filename='blankShirt.png') }}" class="image-box">
+            {% endif %}
+        </div>
+    
+        <div class="image-container">
+            {% if "Pants" in dictcomp and "Skirt" in dictcomp %}
+                <img src="{{ dictcomp['Pants'].getImg() }}" class="image-box" onclick="toggleImage(this, ['{{ dictcomp['Pants'].getImg() }}', '{{ dictcomp['Skirt'].getImg() }}'])">
+            {% elif "Pants" in dictcomp %}
+                <img src="{{ dictcomp['Pants'].getImg() }}" class="image-box">
+            {% elif "Skirt" in dictcomp %}
+                <img src="{{ dictcomp['Skirt'].getImg() }}" class="image-box">
+            {% else %}
+                <img src="{{ url_for('static', filename='blankPants.jpg') }}" class="image-box">
+            {% endif %}
+        </div>
+    
+        <div class="image-container">
+            {% if "Left-shoe" in dictcomp and "Right-shoe" in dictcomp %}
+                <img src="{{ dictcomp['Left-shoe'].getImg() }}" class="image-box" onclick="toggleImage(this, ['{{ dictcomp['Left-shoe'].getImg() }}', '{{ dictcomp['Right-shoe'].getImg() }}'])">
+            {% elif "Left-shoe" in dictcomp %}
+                <img src="{{ dictcomp['Left-shoe'].getImg() }}" class="image-box">
+            {% elif "Right-shoe" in dictcomp %}
+                <img src="{{ dictcomp['Right-shoe'].getImg() }}" class="image-box">
+            {% else %}
+                <img src="{{ url_for('static', filename='blankShoe.jpg') }}" class="image-box">
+            {% endif %}
         </div>
     </div>
 </body>

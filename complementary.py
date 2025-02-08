@@ -49,6 +49,8 @@ def makeRGBCompliments(clothes):
     return compliments
 
 def possibleClosestCompliment(clothes, item):
+    
+    
     if item is None or not clothes:
         return {}
     
@@ -62,17 +64,21 @@ def possibleClosestCompliment(clothes, item):
         'item': obj
     } for obj in clothes])
     
+
+    
     # Calculate weighted average for target item
     targetRGB = np.array(weightedAverage(item)) - 255
     
     # Apply weightedAverage to each row and calculate difference
     df['difference'] = df.apply(lambda row: np.sum(np.abs(np.array(weightedAverage(row['item'])) - 255 - targetRGB)), axis=1)
     
+    
     # Filter out items of the same type as the target
     differences = df[df['type'] != type]
     
-    output = {}
     
+    output = {}
+    output[item.getType()] = item
     for unique_type in differences['type'].unique():
         type_subset = differences[differences['type'] == unique_type]
         closest_item = type_subset.loc[type_subset['difference'].idxmin()]['item']
