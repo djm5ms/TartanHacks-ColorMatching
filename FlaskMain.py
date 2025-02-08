@@ -6,6 +6,10 @@ from werkzeug.middleware.shared_data import SharedDataMiddleware
 from SegCloth import segment_clothing
 
 
+from SegCloth import segment_clothing
+
+from PIL import Image
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['UPLOAD_FOLDER_URL'] = '/uploads'
@@ -40,8 +44,13 @@ def upload_file():
         seg_file=segment_clothing(Image.open(f'uploads/{filename}'))
         seg_filename='checker'+secure_filename(seg_file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        seg_file.save(os.path.join(app.config['UPLOAD_FOLDER'], seg_filename))
-        
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        image = Image.open(filepath)
+
+        result = segment_clothing(img=image, clothes = ["Upper-clothes"])
+        result.save("segmentedBiker.png")
+    
         return render_template('index.html',
         message='File successfully uploaded',
         image=url_for('uploaded_file', filename=filename),
