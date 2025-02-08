@@ -16,7 +16,7 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 
-    
+   
 
 # Serve the uploads folder as a static folder
 app.add_url_rule('/uploads/<filename>', 'uploaded_file', build_only=True)
@@ -39,24 +39,30 @@ def upload_file():
         return 'No selected file'
     if file:
         filename = secure_filename(file.filename)
+        if '.jpg' in filename:
+            filename = filename.replace('.jpg', '.png')
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
         image = Image.open(filepath)
 
-        result = segment_clothing(image, clothes = ["Upper-clothes"])
+        result = segment_clothing(img=image, clothes = ["Upper-clothes"])
+        
+        
        
         result_filename = "result_" + filename
         result_path = os.path.join(app.config['UPLOAD_FOLDER'], result_filename)
         result.save(result_path)
         
-        
-        
-    
+       
+       
+       
+   
         return render_template('index.html',
         message='File successfully uploaded',
         image=url_for('uploaded_file', filename=filename),
-        image2=url_for('uploaded_file', filename=result_filename)
+        image2=url_for('uploaded_file', filename=result_filename),
+        type=type
         )
 
 @app.route('/new-page')
