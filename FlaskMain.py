@@ -19,7 +19,7 @@ def upload_file():
     if file:
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        print("pizza")
+        return 'File uploaded successfully'
 
 @app.route('/new-page')
 def new_page():
