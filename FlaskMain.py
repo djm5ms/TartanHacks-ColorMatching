@@ -53,14 +53,18 @@ def upload_file():
         
         
         result = segment_clothing(img=image, clothes = ["Upper-clothes"])
-        result = result.convert("RGB")
+       
+        result_filename = "result_" + filename
+        result_path = os.path.join(app.config['UPLOAD_FOLDER'], result_filename)
+        result.save(result_path)
         
-        result.save(os.path.join(app.config['UPLOAD_FOLDER'], "changed" + secure_filename(filename)), format="JPEG")
+        
+        
     
         return render_template('index.html',
         message='File successfully uploaded',
         image=url_for('uploaded_file', filename=filename),
-        image2=url_for('uploaded_file', filename=seg_filename)  
+        image2=url_for('uploaded_file', filename=result_filename)
         )
 
 @app.route('/new-page')
